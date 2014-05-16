@@ -5,8 +5,10 @@ module RbEtl
 
     def run
       incoming.each do |row|
-        outgoing.puts(transform(row))
+        new_row = transform(row)
+        outgoing.puts(new_row)
       end
+      outgoing.close
     end
 
     private
