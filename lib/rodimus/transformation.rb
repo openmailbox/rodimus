@@ -21,9 +21,14 @@ module Rodimus
       Process.waitall
     end
 
+    def to_s
+      "#{self.class} with #{steps.length} steps"
+    end
+
     private
 
     def prepare
+      Rodimus.logger.info "Preparing #{self}..."
       # [1, 2, 3, 4] => [1, 2], [2, 3], [3, 4]
       steps.inject do |first, second|
         read, write = IO.pipe

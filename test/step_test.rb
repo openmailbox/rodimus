@@ -2,6 +2,9 @@ require 'minitest/autorun'
 require 'rodimus'
 
 module Rodimus
+  Rodimus.configure do |config|
+    config.logger = Logger.new(nil)
+  end
   
   class TestStep < MiniTest::Unit::TestCase
     def setup
@@ -20,7 +23,7 @@ module Rodimus
       assert_equal @test_string, @outgoing.read.chomp
     end
 
-    def test_transformation_called
+    def test_process_row
       step = Class.new do
         include Rodimus::Step
 
