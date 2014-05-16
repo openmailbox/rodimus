@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Rodimus::VERSION
   spec.authors       = ["Brandon Rice"]
   spec.email         = ["brice84@gmail.com"]
-  spec.summary       = ""
-  spec.description   = ""
-  spec.homepage      = ""
+  spec.summary       = "An ETL (Extract-Transform-Load) library that uses a forking process model for concurrency."
+  spec.description   = "ETL is hard.  There are lots of solutions, but few are open-source and none (that I know of) are Ruby."
+  spec.homepage      = "https://github.com/nevern02/rodimus"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
