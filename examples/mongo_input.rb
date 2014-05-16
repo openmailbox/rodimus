@@ -1,7 +1,6 @@
 require 'rodimus'
 require 'mongo'
 require 'json'
-require 'tempfile'
 
 class MongoInput
   attr_reader :client, :db, :collection
