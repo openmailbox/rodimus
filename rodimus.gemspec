@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Brandon Rice"]
   spec.email         = ["brice84@gmail.com"]
   spec.summary       = "An ETL (Extract-Transform-Load) library that uses a forking process model for concurrency."
-  spec.description   = "ETL is hard.  There are lots of solutions, but few are open-source and none (that I know of) are Ruby."
+  spec.description   = "An ETL (Extract-Transform-Load) library that uses a forking process model for concurrency."
   spec.homepage      = "https://github.com/nevern02/rodimus"
   spec.license       = "MIT"
 
