@@ -14,7 +14,7 @@ class MongoInput
     @incoming = collection.find.limit(4)
   end
 
-  def transform(row)
+  def process_row(row)
     row.to_json
   end
 end
@@ -26,7 +26,7 @@ class TempfileOut
     @outgoing = File.new('output.txt', 'w')
   end
 
-  def transform(row)
+  def process_row(row)
     JSON.parse(row).keys.join(',')
   end
 end
