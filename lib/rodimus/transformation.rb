@@ -1,4 +1,4 @@
-module RbEtl
+module Rodimus
 
   class Transformation
     attr_reader :steps
@@ -10,12 +10,12 @@ module RbEtl
     def run
       prepare
 
-      steps.each_with_index do |step, index|
+      steps.each do |step|
         fork do
           step.run
         end
-        step.incoming.close unless index == 0
-        step.outgoing.close unless index == steps.length - 1
+        step.incoming && step.incoming.close
+        step.outgoing && step.outgoing.close
       end
 
       Process.waitall

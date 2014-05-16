@@ -1,4 +1,4 @@
-require 'rb_etl'
+require 'rodimus'
 require 'mongo'
 require 'json'
 require 'tempfile'
@@ -6,7 +6,7 @@ require 'tempfile'
 class MongoInput
   attr_reader :client, :db, :collection
 
-  include RbEtl::Step
+  include Rodimus::Step
 
   def initialize
     @client = Mongo::MongoClient.new('localhost', 27017)
@@ -21,7 +21,7 @@ class MongoInput
 end
 
 class TempfileOut
-  include RbEtl::Step
+  include Rodimus::Step
 
   def initialize
     @outgoing = File.new('output.txt', 'w')
@@ -32,7 +32,7 @@ class TempfileOut
   end
 end
 
-t = RbEtl::Transformation.new
+t = Rodimus::Transformation.new
 s1 = MongoInput.new
 s2 = TempfileOut.new
 t.steps << s1

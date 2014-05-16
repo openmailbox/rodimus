@@ -1,13 +1,13 @@
 require 'minitest/autorun'
-require 'rb_etl'
+require 'rodimus'
 
-module RbEtl
+module Rodimus
   
   class TestStep < MiniTest::Unit::TestCase
     def test_streaming_rows
       test_string = "row 1\nrow 2"
       step = Object.new
-      step.extend(RbEtl::Step)
+      step.extend(Rodimus::Step)
       step.define_singleton_method(:transform) { |i| i }
       incoming = StringIO.new(test_string)
       outgoing = StringIO.new
@@ -21,9 +21,9 @@ module RbEtl
     def test_transformation_called
       test_string = "row 1\nrow 2"
       step = Class.new do
-        include RbEtl::Step
+        include Rodimus::Step
 
-        def transform(row)
+        def process_row(row)
           row.upcase
         end
       end.new

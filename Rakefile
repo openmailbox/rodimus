@@ -2,7 +2,7 @@ $: << File.expand_path('../lib', __FILE__)
 
 require 'bundler/gem_tasks'
 require 'rake/testtask'
-require 'rb_etl'
+require 'rodimus'
 
 task :default => :test
 
