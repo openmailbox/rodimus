@@ -1,4 +1,5 @@
 # Rodimus
+[![Gem Version](https://badge.fury.io/rb/rodimus.svg)](http://badge.fury.io/rb/rodimus)[![Build Status](https://travis-ci.org/nevern02/rodimus.svg?branch=master)](https://travis-ci.org/nevern02/rodimus)
 
 ETL stands for Extract-Transform-Load. Sometimes, you have data in Source A
 that needs to be moved to Destination B.  Along the way, it needs to be
