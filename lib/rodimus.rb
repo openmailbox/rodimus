@@ -5,6 +5,8 @@ require 'rodimus/transformation'
 require 'rodimus/version'
 
 module Rodimus
+  $SAFE = 1
+
   class << self
     attr_accessor :configuration
   end

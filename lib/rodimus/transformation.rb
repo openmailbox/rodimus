@@ -1,17 +1,23 @@
+require 'drb'
+
 module Rodimus
 
   class Transformation
-    attr_reader :steps
+    attr_reader :steps, :server, :variables
 
     def initialize
       @steps = StepCollection.new(self)
+      @variables = {}
     end
 
     def run
+      @server = DRb.start_service(nil, variables)
+
       prepare
 
       steps.each do |step|
         fork do
+          DRb.start_service # the parent DRb thread dies across the fork
           step.run
         end
         step.incoming && step.incoming.close if step.incoming.respond_to?(:close) 
@@ -19,6 +25,8 @@ module Rodimus
       end
 
       Process.waitall
+
+      server.stop_service
     end
 
     def to_s
