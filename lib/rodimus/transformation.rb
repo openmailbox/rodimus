@@ -4,7 +4,7 @@ module Rodimus
     attr_reader :steps
 
     def initialize
-      @steps = []
+      @steps = StepCollection.new(self)
     end
 
     def run
@@ -14,8 +14,8 @@ module Rodimus
         fork do
           step.run
         end
-        step.incoming && step.incoming.close
-        step.outgoing && step.outgoing.close
+        step.incoming && step.incoming.close if step.incoming.respond_to?(:close) 
+        step.outgoing && step.outgoing.close if step.outgoing.respond_to?(:close) 
       end
 
       Process.waitall

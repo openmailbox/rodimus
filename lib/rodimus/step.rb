@@ -1,7 +1,20 @@
 module Rodimus
 
   module Step
-    attr_accessor :incoming, :outgoing
+    attr_accessor :incoming, :outgoing, :transformation
+
+    # Override this for custom cleanup functionality.
+    def finalize; end
+
+    # Override this for custom output handling functionality per-row.
+    def handle_output(transformed_row)
+      outgoing.puts(transformed_row)
+    end
+
+    # Override this for custom transformation functionality
+    def process_row(row)
+      row.to_s
+    end
 
     def run
       Rodimus.logger.info "Running #{self}"
@@ -15,21 +28,6 @@ module Rodimus
 
     def to_s
       "#{self.class} connected to input: #{incoming} and output: #{outgoing}"
-    end
-
-    private
-
-    # Override this for custom functionality
-    def finalize; end
-
-    # Override this for custom functionality
-    def handle_output(transformed_row)
-      outgoing.puts(transformed_row)
-    end
-
-    # Override this for custom functionality
-    def process_row(row)
-      row.to_s
     end
   end
 
