@@ -1,8 +1,15 @@
 module Rodimus
 
   module Step
-    attr_accessor :incoming, :outgoing, :transformation
-    attr_reader :shared_variables
+    # The incoming data stream.  Can be anything that quacks like an IO
+    attr_accessor :incoming
+
+    # The outgoing data stream.  Can be anything that quacks like an IO
+    attr_accessor :outgoing
+
+    # Shared user-data accessible across all running transformation steps.
+    # This is initialized by the Transformation when the step begins to run.
+    attr_accessor :shared_data
 
     # Override this for custom cleanup functionality.
     def finalize; end
@@ -19,7 +26,6 @@ module Rodimus
 
     def run
       Rodimus.logger.info "Running #{self}"
-      @shared_variables = DRbObject.new_with_uri(transformation.server.uri) if transformation
       incoming.each do |row|
         transformed_row = process_row(row)
         handle_output(transformed_row)
