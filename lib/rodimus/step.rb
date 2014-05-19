@@ -32,6 +32,9 @@ module Rodimus
       end
       finalize
       Rodimus.logger.info "Finished #{self}"
+    ensure
+      incoming && incoming.close if incoming.respond_to?(:close)
+      outgoing && outgoing.close if outgoing.respond_to?(:close)
     end
 
     def to_s

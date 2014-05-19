@@ -11,6 +11,7 @@ module Rodimus
       @test_string = "row 1\nrow 2"
       @incoming = StringIO.new(@test_string)
       @outgoing = StringIO.new
+      @tested_io = @outgoing.dup # Because outgoing is auto-closed
     end
 
     def test_streaming_rows
@@ -19,8 +20,8 @@ module Rodimus
       step.incoming = @incoming
       step.outgoing = @outgoing
       step.run
-      @outgoing.rewind
-      assert_equal @test_string, @outgoing.read.chomp
+      @tested_io.rewind
+      assert_equal @test_string, @tested_io.read.chomp
     end
 
     def test_process_row
@@ -34,8 +35,8 @@ module Rodimus
       step.incoming = @incoming
       step.outgoing = @outgoing
       step.run
-      @outgoing.rewind
-      assert_equal @test_string.upcase, @outgoing.read.chomp
+      @tested_io.rewind
+      assert_equal @test_string.upcase, @tested_io.read.chomp
     end
   end
 
