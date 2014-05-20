@@ -15,7 +15,6 @@ module Rodimus
 
     def run
       @drb_server = DRb.start_service(nil, shared_data)
-
       prepare
 
       steps.each do |step|
@@ -24,12 +23,10 @@ module Rodimus
           step.shared_data = DRbObject.new_with_uri(drb_server.uri)
           step.run
         end
-        step.incoming && step.incoming.close if step.incoming.respond_to?(:close) 
-        step.outgoing && step.outgoing.close if step.outgoing.respond_to?(:close) 
+        step.close_descriptors
       end
-
+    ensure
       Process.waitall
-
       drb_server.stop_service
     end
 

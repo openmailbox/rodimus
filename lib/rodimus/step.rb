@@ -11,6 +11,12 @@ module Rodimus
     # This is initialized by the Transformation when the step begins to run.
     attr_accessor :shared_data
 
+    def close_descriptors
+      [incoming, outgoing].reject(&:nil?).each do |descriptor|
+        descriptor.close if descriptor.respond_to?(:close)
+      end
+    end
+
     # Override this for custom cleanup functionality.
     def finalize; end
 
@@ -33,8 +39,7 @@ module Rodimus
       finalize
       Rodimus.logger.info "Finished #{self}"
     ensure
-      incoming && incoming.close if incoming.respond_to?(:close)
-      outgoing && outgoing.close if outgoing.respond_to?(:close)
+      close_descriptors
     end
 
     def to_s
