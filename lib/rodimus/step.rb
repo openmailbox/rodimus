@@ -43,7 +43,7 @@ module Rodimus
     end
 
     def to_s
-      "#{self.class} connected to input: #{incoming} and output: #{outgoing}"
+      "#{self.class} connected to input: #{incoming || 'nil'} and output: #{outgoing || 'nil'}"
     end
   end
 
