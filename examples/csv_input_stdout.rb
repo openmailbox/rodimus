@@ -6,7 +6,7 @@ class CsvInput
   include Rodimus::Step
 
   def initialize
-    @incoming = CSV.open('worldbank-sample.csv')
+    @incoming = CSV.open(File.expand_path('../worldbank-sample.csv', __FILE__))
     @incoming.readline # skip the headers
   end
 
