@@ -3,13 +3,14 @@ require 'drb'
 module Rodimus
 
   class Transformation
-    attr_reader :drb_server, :steps
+    attr_reader :drb_server, :pids, :steps
 
     # User-data accessible across all running steps.
     attr_reader :shared_data
 
     def initialize
       @steps = []
+      @pids = []
       @shared_data = {} # TODO: This needs to be thread safe
     end
 
@@ -18,7 +19,7 @@ module Rodimus
       prepare
 
       steps.each do |step|
-        fork do
+        pids << fork do
           DRb.start_service # the parent DRb thread dies across the fork
           step.shared_data = DRbObject.new_with_uri(drb_server.uri)
           step.run
@@ -27,6 +28,7 @@ module Rodimus
       end
     ensure
       Process.waitall
+      pids.clear
       drb_server.stop_service
     end
 
