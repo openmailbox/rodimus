@@ -34,4 +34,4 @@ s2 = FormattedText.new
 t.steps << s1
 t.steps << s2
 t.run
-puts "Transformation to complete!"
+puts "Transformation complete!"
