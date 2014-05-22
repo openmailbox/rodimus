@@ -16,6 +16,7 @@ module Rodimus
 
     def run
       @drb_server = DRb.start_service(nil, shared_data)
+      pids.clear
       prepare
 
       steps.each do |step|
@@ -28,7 +29,6 @@ module Rodimus
       end
     ensure
       Process.waitall
-      pids.clear
       drb_server.stop_service
     end
 
