@@ -31,7 +31,33 @@ Or install it yourself as:
 
 ## Usage
 
-See the examples directory for the quickest path to success.
+tl;dr: See the examples directory for the quickest path to success.
+
+A transformation is an operation that consists of many steps.  Each step may
+manipulate the data in some way.  Typically, the first step is reserved for
+reading from your data source, and the last step is used to write to the new
+destination.  
+
+In Rodimus, you create a transformation object, and then you add
+one or more steps to its array of steps.  You typically create steps by writing 
+your own classes that include the Rodimus::Step mixin.  When the transformation is
+subsequently run, a new process is forked for each step.  All processes are
+connected together using pipes except for the first and last steps (those being the
+source and destination steps).  Each step then consumes rows of data from its
+incoming pipe and performs some operation on it before writing it to the
+outgoing pipe.  
+
+There are several methods on the Rodimus::Step mixin that are able to be
+overridden for custom processing behavior before, during, or after the each
+row is handled.  If those aren't enough, you're also free to manipulate the
+input/output objects (i.e. to redirect to standard out).
+
+The Rodimus approach is to provide a minimal, flexible framework upon which
+custom ETL solutions can be built.  ETL is complex, and there tend to be many
+subtle differences between projects which can make things like establishing
+conventions and encouraging code reuse difficult.  Rodimus is an attempt to
+codify those things which are probably useful to a majority of ETL projects
+with as little overhead as possible.
 
 ## Contributing
 
