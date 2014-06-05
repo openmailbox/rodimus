@@ -59,6 +59,9 @@ conventions and encouraging code reuse difficult.  Rodimus is an attempt to
 codify those things which are probably useful to a majority of ETL projects
 with as little overhead as possible.
 
+If you'd like to know the thought process behind Rodimus, check out [this 
+blog post](http://www.blrice.net/blog/2014/06/03/etl-with-ruby-and-rodimus/).
+
 ## Contributing
 
 1. Fork it ( http://github.com/nevern02/rodimus/fork )
