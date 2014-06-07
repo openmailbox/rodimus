@@ -41,6 +41,9 @@ module Rodimus
       Rodimus.logger.info "Running #{self}"
       @row_count = 1
       incoming.each do |row|
+        before_row_hooks.each do |hook|
+          self.send(hook)
+        end
         benchmark[:count] += 1
         row_start_time = Time.now.to_f
         transformed_row = process_row(row)
@@ -51,6 +54,9 @@ module Rodimus
         benchmark[:total] = (benchmark[:total] + row_run_time).round(4)
         benchmark[:min] = row_run_time if benchmark[:min] > row_run_time
         benchmark[:max] = row_run_time if benchmark[:max] < row_run_time
+        after_row_hooks.each do |hook|
+          self.send(hook)
+        end
       end
       if benchmark[:count] > 0
         benchmark[:average] = (benchmark[:total] / benchmark[:count]).round(4)

@@ -44,15 +44,26 @@ module Rodimus
       assert_equal @test_string.upcase, @outgoing.history.join
     end
 
-    def test_before_run_hook_called
+    def test_after_row_hook_called
       @step.instance_eval do
-        def before_run_test; @called = true; end
+        def after_row_test; @called ||= 0; @called += 1; end
         def called; @called; end
       end
 
       assert_nil @step.called
       @step.run
-      assert @step.called, "before_run hook not called!"
+      assert_equal @test_string.split("\n").count, @step.called
+    end
+
+    def test_before_row_hook_called
+      @step.instance_eval do
+        def before_row_test; @called ||= 0; @called += 1; end
+        def called; @called; end
+      end
+
+      assert_nil @step.called
+      @step.run
+      assert_equal @test_string.split("\n").count, @step.called
     end
 
     def test_after_run_hook_called
@@ -64,6 +75,17 @@ module Rodimus
       assert_nil @step.called
       @step.run
       assert @step.called, "after_run hook not called!"
+    end
+
+    def test_before_run_hook_called
+      @step.instance_eval do
+        def before_run_test; @called = true; end
+        def called; @called; end
+      end
+
+      assert_nil @step.called
+      @step.run
+      assert @step.called, "before_run hook not called!"
     end
   end
 
