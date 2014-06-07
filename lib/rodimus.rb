@@ -1,4 +1,5 @@
 require 'rodimus/configuration'
+require 'rodimus/hook'
 require 'rodimus/step'
 require 'rodimus/transformation'
 require 'rodimus/version'

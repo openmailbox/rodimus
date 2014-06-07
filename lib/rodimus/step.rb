@@ -34,6 +34,9 @@ module Rodimus
 
     def run
       start_time = Time.now.to_i
+      before_run_hooks.each do |hook|
+        self.send(hook)
+      end
       @benchmark = {count: 0, total: 0, min: 100, max: 0, average: 0}
       Rodimus.logger.info "Running #{self}"
       @row_count = 1
@@ -49,7 +52,9 @@ module Rodimus
         benchmark[:min] = row_run_time if benchmark[:min] > row_run_time
         benchmark[:max] = row_run_time if benchmark[:max] < row_run_time
       end
-      benchmark[:average] = (benchmark[:total] / benchmark[:count]).round(4)
+      if benchmark[:count] > 0
+        benchmark[:average] = (benchmark[:total] / benchmark[:count]).round(4)
+      end
       finalize
       run_time = Time.now.to_i - start_time
       elapsed_hours = run_time / 3600
@@ -64,6 +69,24 @@ module Rodimus
 
     def to_s
       "#{self.class} connected to input: #{incoming || 'nil'} and output: #{outgoing || 'nil'}"
+    end
+
+    private
+
+    def after_row_hooks
+      @after_row_hooks ||= Hook.after_row_hooks(self)
+    end
+
+    def before_row_hooks
+      @before_row_hooks ||= Hook.before_row_hooks(self)
+    end
+
+    def after_run_hooks
+      @after_run_hooks ||= Hook.after_run_hooks(self)
+    end
+
+    def before_run_hooks
+      @before_run_hooks ||= Hook.before_run_hooks(self)
     end
   end
 
