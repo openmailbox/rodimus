@@ -1,6 +1,8 @@
 module Rodimus
 
   module Step
+    include Hookable
+
     # The incoming data stream.  Can be anything that quacks like an IO
     attr_accessor :incoming
 
@@ -83,19 +85,19 @@ module Rodimus
     private
 
     def after_row_hooks
-      @after_row_hooks ||= Hook.after_row_hooks(self)
-    end
-
-    def before_row_hooks
-      @before_row_hooks ||= Hook.before_row_hooks(self)
+      @after_row_hooks ||= discovered_hooks(:after_row)
     end
 
     def after_run_hooks
-      @after_run_hooks ||= Hook.after_run_hooks(self)
+      @after_run_hooks ||= discovered_hooks(:after_run)
+    end
+
+    def before_row_hooks
+      @before_row_hooks ||= discovered_hooks(:before_row)
     end
 
     def before_run_hooks
-      @before_run_hooks ||= Hook.before_run_hooks(self)
+      @before_run_hooks ||= discovered_hooks(:before_run)
     end
   end
 

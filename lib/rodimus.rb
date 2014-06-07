@@ -1,5 +1,5 @@
 require 'rodimus/configuration'
-require 'rodimus/hook'
+require 'rodimus/hookable'
 require 'rodimus/step'
 require 'rodimus/transformation'
 require 'rodimus/version'
