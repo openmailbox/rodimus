@@ -61,6 +61,9 @@ module Rodimus
       remaining_seconds = run_time % 3600
       elapsed_minuntes = remaining_seconds / 60
       elapsed_seconds = remaining_seconds % 60
+      after_run_hooks.each do |hook|
+        self.send(hook)
+      end
       Rodimus.logger.info "Finished #{self} after #{elapsed_hours} hours, #{elapsed_minuntes} minutes, #{elapsed_seconds} seconds."
       Rodimus.logger.info "#{self} benchmarks: #{benchmark}"
     ensure

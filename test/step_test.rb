@@ -54,6 +54,17 @@ module Rodimus
       @step.run
       assert @step.called, "before_run hook not called!"
     end
+
+    def test_after_run_hook_called
+      @step.instance_eval do
+        def after_run_test; @called = true; end
+        def called; @called; end
+      end
+
+      assert_nil @step.called
+      @step.run
+      assert @step.called, "after_run hook not called!"
+    end
   end
 
 end
