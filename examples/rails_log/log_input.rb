@@ -1,9 +1,8 @@
 require 'rodimus'
 
-class LogInput
-  include Rodimus::Step
-
+class LogInput < Rodimus::Step
   def initialize(file)
+    super()
     @incoming = File.new(file)
   end
 end

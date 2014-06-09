@@ -1,10 +1,8 @@
 require 'tempfile'
 require 'csv'
 
-class FileOutput
-  include Rodimus::Step
-
-  def initialize
+class FileOutput < Rodimus::Step
+  def before_run_set_output
     @outgoing = CSV.open('/tmp/connection_logging.csv', 'w')
   end
 
@@ -15,5 +13,4 @@ class FileOutput
   def process_row(row)
     JSON.parse(row).values
   end
-
 end

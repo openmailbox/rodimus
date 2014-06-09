@@ -1,8 +1,6 @@
 require 'json'
 
-class ParseConnection
-  include Rodimus::Step
-
+class ParseConnection < Rodimus::Step
   attr_reader :current_event
 
   def handle_output(row); nil; end
