@@ -24,22 +24,9 @@ class TestStep < MiniTest::Unit::TestCase
     @test_string = "row 1\nrow 2"
     @incoming = StringIO.new(@test_string)
     @outgoing = TestIO.new
-    @step = Object.new
-    @step.extend(Rodimus::Step)
+    @step = Rodimus::Step.new
     @step.incoming = @incoming
     @step.outgoing = @outgoing
-  end
-
-  def hook_test(hook_name, expected_call_count)
-    @step.instance_eval do
-      @hook_call_count = 0
-      def hook_call_count; @hook_call_count; end
-    end
-    @step.define_singleton_method(hook_name) { @hook_call_count += 1 }
-
-    assert_equal 0, @step.hook_call_count
-    @step.run
-    assert_equal expected_call_count, @step.hook_call_count
   end
 
   def test_streaming_rows
@@ -53,21 +40,5 @@ class TestStep < MiniTest::Unit::TestCase
     end
     @step.run
     assert_equal @test_string.upcase, @outgoing.history.join
-  end
-
-  def test_after_row_hook
-    hook_test(:after_row_test, @test_string.split("\n").length)
-  end
-
-  def test_after_run_hook
-    hook_test(:after_run_test, 1)
-  end
-
-  def test_before_row_hook
-    hook_test(:before_row_test, @test_string.split("\n").length)
-  end
-
-  def test_before_run_hook
-    hook_test(:before_run_test, 1)
   end
 end

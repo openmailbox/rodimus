@@ -11,16 +11,13 @@ module Rodimus
     def test_forking_processes
       incoming = StringIO.new
       transformation = Transformation.new
-      steps = []
       number_of_steps = 2 + rand(5)
-      number_of_steps.times { steps << Object.new }
-      steps.each do |step| 
-        step.extend(Rodimus::Step) 
-        transformation.steps << step
+      number_of_steps.times do 
+        transformation.steps << Rodimus::Step.new
       end
-      steps.first.incoming = incoming
+      transformation.steps.first.incoming = incoming
       transformation.run
-      assert_equal(steps.count, transformation.pids.count)
+      assert_equal(transformation.steps.count, transformation.pids.count)
     end
   end
 

@@ -2,10 +2,12 @@ require 'rodimus'
 require 'csv'
 require 'json'
 
-class CsvInput
-  include Rodimus::Step
+Rodimus.configure do |config|
+  config.benchmarking = true
+end
 
-  def initialize
+class CsvInput < Rodimus::Step
+  def before_run_set_incoming
     @incoming = CSV.open(File.expand_path('../worldbank-sample.csv', __FILE__))
     @incoming.readline # skip the headers
   end
@@ -15,10 +17,8 @@ class CsvInput
   end
 end
 
-class FormattedText
-  include Rodimus::Step
-
-  def initialize
+class FormattedText < Rodimus::Step
+  def before_run_set_stdout
     @outgoing = STDOUT.dup
   end
 
