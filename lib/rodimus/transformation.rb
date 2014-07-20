@@ -17,9 +17,10 @@ module Rodimus
     def run
       @drb_server = DRb.start_service(nil, shared_data)
       pids.clear
-      prepare
+      Rodimus.logger.info "Preparing #{self}..."
+      prepare(steps)
 
-      steps.each do |step|
+      steps.flatten.each do |step|
         pids << fork do
           DRb.start_service # the parent DRb thread dies across the fork
           step.shared_data = DRbObject.new_with_uri(drb_server.uri)
@@ -38,14 +39,24 @@ module Rodimus
 
     private
 
-    def prepare
-      Rodimus.logger.info "Preparing #{self}..."
+    def prepare(steps)
       # [1, 2, 3, 4] => [1, 2], [2, 3], [3, 4]
       steps.inject do |first, second|
-        read, write = IO.pipe
-        first.outgoing = write
-        second.incoming = read
-        second
+        if second.is_a? Array
+          # [1, [[2, 3], [4, 5]]] => [1, 2, 3], [1, 4, 5]
+          second.each { |branch|
+            prepare([first, branch].flatten(1))
+          }
+          return
+        else
+          read, write = IO.pipe
+          # We can have multiple outgoing so we use set to ensure proper
+          # application of the writer
+          first.set_outgoing(write)
+
+          second.incoming = read
+          second
+        end
       end
     end
   end
