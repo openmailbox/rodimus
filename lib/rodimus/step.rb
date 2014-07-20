@@ -26,9 +26,6 @@ module Rodimus
       end
     end
 
-    # Override this for custom cleanup functionality.
-    def finalize; end
-
     # Override this for custom output handling functionality per-row.
     def handle_output(transformed_row)
       outgoing.puts(transformed_row)
@@ -50,7 +47,6 @@ module Rodimus
         @row_count += 1
         notify(self, :after_row)
       end
-      finalize
       notify(self, :after_run)
     ensure
       close_descriptors
