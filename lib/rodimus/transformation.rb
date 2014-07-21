@@ -3,6 +3,10 @@ require 'drb'
 module Rodimus
 
   class Transformation
+    include Observable
+    include Observing # Transformations observe themselves for run hooks
+    include RuntimeLogging
+
     attr_reader :drb_server, :pids, :steps
 
     # User-data accessible across all running steps.
@@ -12,9 +16,11 @@ module Rodimus
       @steps = []
       @pids = []
       @shared_data = {} # TODO: This needs to be thread safe
+      observers << self
     end
 
     def run
+      notify(self, :before_run)
       @drb_server = DRb.start_service(nil, shared_data)
       pids.clear
       prepare
@@ -30,6 +36,7 @@ module Rodimus
     ensure
       Process.waitall
       drb_server.stop_service
+      notify(self, :after_run)
     end
 
     def to_s
@@ -39,7 +46,6 @@ module Rodimus
     private
 
     def prepare
-      Rodimus.logger.info "Preparing #{self}..."
       # [1, 2, 3, 4] => [1, 2], [2, 3], [3, 4]
       steps.inject do |first, second|
         read, write = IO.pipe
