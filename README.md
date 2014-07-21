@@ -40,14 +40,14 @@ destination.
 
 In Rodimus, you create a transformation object, and then you add
 one or more steps to its array of steps.  You typically create steps by writing 
-your own classes that include the Rodimus::Step mixin.  When the transformation is
+your own classes that inherit from Rodimus::Step.  When the transformation is
 subsequently run, a new process is forked for each step.  All processes are
 connected together using pipes except for the first and last steps (those being the
 source and destination steps).  Each step then consumes rows of data from its
 incoming pipe and performs some operation on it before writing it to the
 outgoing pipe.  
 
-There are several methods on the Rodimus::Step mixin that are able to be
+There are several methods on the Rodimus::Step class that are able to be
 overridden for custom processing behavior before, during, or after the each
 row is handled.  If those aren't enough, you're also free to manipulate the
 input/output objects (i.e. to redirect to standard out).
