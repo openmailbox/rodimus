@@ -1,6 +1,6 @@
 
 
-Started GET "/" for 127.0.0.1 at 2014-05-27 16:29:31 -0400
+Started POST "/" for 127.0.0.1 at 2014-05-27 16:29:31 -0400
 Processing by Rails::WelcomeController#index as HTML
   Rendered /home/brandon/.rvm/gems/ruby-2.1.2@global/gems/railties-4.1.1/lib/rails/templates/rails/welcome/index.html.erb (1.0ms)
 Completed 200 OK in 11ms (Views: 3.9ms | ActiveRecord: 0.0ms)
@@ -37,7 +37,7 @@ Processing by TestingController#show as HTML
 Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.0ms)
 
 
-Started GET "/testing/index" for 127.0.0.1 at 2014-05-27 16:33:03 -0400
+Started POST "/testing/index" for 127.0.0.1 at 2014-05-27 16:33:03 -0400
 Processing by TestingController#index as */*
   Rendered text template (0.0ms)
 Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
@@ -49,7 +49,7 @@ Processing by TestingController#dashboard as */*
 Completed 200 OK in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms)
 
 
-Started GET "/testing/show" for 127.0.0.1 at 2014-05-27 16:33:52 -0400
+Started DELETE "/testing/show" for 127.0.0.1 at 2014-05-27 16:33:52 -0400
 Processing by TestingController#show as */*
   Rendered text template (0.0ms)
 Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
@@ -79,7 +79,7 @@ Processing by TestingController#show as */*
 Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
 
 
-Started GET "/testing/show" for 127.0.0.1 at 2014-05-27 16:33:52 -0400
+Started DELETE "/testing/show" for 127.0.0.1 at 2014-05-27 16:33:52 -0400
 Processing by TestingController#show as */*
   Rendered text template (0.0ms)
 Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)

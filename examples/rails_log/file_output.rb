@@ -2,8 +2,14 @@ require 'tempfile'
 require 'csv'
 
 class FileOutput < Rodimus::Step
+  def initialize(suffix = nil)
+    super
+    @suffix = suffix ? "_#{suffix}" : ''
+  end
+
   def before_run_set_output
-    @outgoing = CSV.open('/tmp/connection_logging.csv', 'w')
+    filename = "/tmp/connection_logging#{@suffix}.csv"
+    @outgoing = CSV.open(filename , "w")
   end
 
   def finalize

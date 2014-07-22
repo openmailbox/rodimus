@@ -15,7 +15,7 @@ module Rodimus
     # This is initialized by the Transformation when the step begins to run.
     attr_accessor :shared_data
 
-    def initialize
+    def initialize(*args)
       observers << self
       observers << Benchmark.new if Rodimus.configuration.benchmarking
     end
@@ -52,9 +52,35 @@ module Rodimus
       close_descriptors
     end
 
+    def set_outgoing(outgoing)
+      @outgoing = outgoing
+    end
+
     def to_s
       "#{self.class} connected to input: #{incoming || 'nil'} and output: #{outgoing || 'nil'}"
     end
   end
 
+  class MultiOutputStep < Step
+    def initialize(*args)
+      super
+      @outgoing ||= []
+    end
+
+    def close_descriptors
+      [incoming, outgoing].flatten.reject(&:nil?).each do |descriptor|
+        descriptor.close if descriptor.respond_to?(:close)
+      end
+    end
+
+    # This default assumes the last output spigot is the default one.
+    # You REALLY should be overriding this call.
+    def handle_output(transformed_row)
+      outgoing[-1].puts(transformed_row)
+    end
+
+    def set_outgoing(new_outgoing)
+      outgoing << new_outgoing
+    end
+  end
 end
