@@ -6,7 +6,7 @@ class FileOutput < Rodimus::Step
     @outgoing = CSV.open('/tmp/connection_logging.csv', 'w')
   end
 
-  def finalize
+  def after_run_log_path
     puts "\nData written to #{outgoing.path}\n\n"
   end
 
