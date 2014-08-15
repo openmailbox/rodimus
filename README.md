@@ -12,9 +12,6 @@ __Why the name?__ Rodimus Prime is one of the leaders of the Autobots, and he
 has a cool name.  Naming a data transformation library after a Transformer
 increases the coolness factor.  It's science.
 
-__NOTE:__ This library is still in the earliest phases of development.  Things
-are prone to change suddenly and rapidly.  Use at your own risk.
-
 ## Installation
 
 Add this line to your application's Gemfile:
