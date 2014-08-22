@@ -3,6 +3,10 @@ require_relative 'log_input'
 require_relative 'parse_connection'
 require_relative 'file_output'
 
+Rodimus.configure do |config|
+  config.benchmarking = true
+end
+
 log = File.expand_path('../rails_example.log', __FILE__)
 t = Rodimus::Transformation.new
 step1 = LogInput.new(log)
