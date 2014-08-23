@@ -8,7 +8,7 @@ module Rodimus
       config.logger = Logger.new(nil)
     end
 
-    def test_forking_processes
+    def test_parallel_steps
       incoming = StringIO.new
       transformation = Transformation.new
       number_of_steps = 2 + rand(5)
@@ -17,7 +17,7 @@ module Rodimus
       end
       transformation.steps.first.incoming = incoming
       transformation.run
-      assert_equal(transformation.steps.count, transformation.pids.count)
+      assert_equal(transformation.steps.count, transformation.ids.count)
     end
   end
 

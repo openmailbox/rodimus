@@ -38,11 +38,12 @@ destination.
 In Rodimus, you create a transformation object, and then you add
 one or more steps to its array of steps.  You typically create steps by writing 
 your own classes that inherit from Rodimus::Step.  When the transformation is
-subsequently run, a new process is forked for each step.  All processes are
-connected together using pipes except for the first and last steps (those being the
-source and destination steps).  Each step then consumes rows of data from its
-incoming pipe and performs some operation on it before writing it to the
-outgoing pipe.  
+subsequently run, a new process is forked for each step.  On steps that support 
+native threads (JRuby, Rubinius), threads are used instead of forking processes. 
+All processes are connected together using pipes except for the first and last 
+steps (those being the source and destination steps).  Each step then consumes
+rows of data from its incoming pipe and performs some operation on it before
+writing it to the outgoing pipe.  
 
 There are several methods on the Rodimus::Step class that are able to be
 overridden for custom processing behavior before, during, or after the each
