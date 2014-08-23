@@ -21,21 +21,35 @@ module Rodimus
 
     def run
       notify(self, :before_run)
-      @drb_server = DRb.start_service(nil, shared_data)
+      if RUBY_PLATFORM == 'ruby'
+        @drb_server = DRb.start_service(nil, shared_data)
+      end
       pids.clear
       prepare
 
       steps.each do |step|
-        pids << fork do
-          DRb.start_service # the parent DRb thread dies across the fork
-          step.shared_data = DRbObject.new_with_uri(drb_server.uri)
-          step.run
+        if RUBY_PLATFORM == 'java'
+          pids << Thread.start do 
+            step.shared_data = shared_data
+            step.run
+          end
+        else
+          pids << fork do
+            DRb.start_service # the parent DRb thread dies across the fork
+            step.shared_data = DRbObject.new_with_uri(drb_server.uri)
+            step.run
+          end
+          step.close_descriptors
         end
-        step.close_descriptors
       end
     ensure
-      Process.waitall
-      drb_server.stop_service
+      if RUBY_PLATFORM == 'java'
+        pids.each { |t| t.join }
+      else
+        Process.waitall
+        drb_server.stop_service
+      end
+
       notify(self, :after_run)
     end
 
