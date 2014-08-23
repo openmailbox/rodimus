@@ -7,7 +7,10 @@ module Rodimus
     include Observing # Transformations observe themselves for run hooks
     include RuntimeLogging
 
-    attr_reader :drb_server, :ids, :steps
+    attr_reader :drb_server, :steps
+
+    # Contains the thread or process identifiers currently in use
+    attr_reader :ids
 
     # User-data accessible across all running steps.
     attr_reader :shared_data
@@ -19,6 +22,7 @@ module Rodimus
       observers << self
     end
 
+    # Run the transformation
     def run
       notify(self, :before_run)
       @drb_server = DRb.start_service(nil, shared_data) unless using_threads?
