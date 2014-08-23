@@ -6,7 +6,7 @@ module Rodimus
     attr_accessor :logger
 
     # Set to true for extra output with step performance details
-    attr_accessor :benchmark
+    attr_accessor :benchmarking
 
     # Use threads for concurrency instead of forking processes.
     # Automatically set to true for JRuby and Rubinius
