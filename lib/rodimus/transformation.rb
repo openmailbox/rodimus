@@ -7,49 +7,33 @@ module Rodimus
     include Observing # Transformations observe themselves for run hooks
     include RuntimeLogging
 
-    attr_reader :drb_server, :pids, :steps
+    attr_reader :drb_server, :ids, :steps
 
     # User-data accessible across all running steps.
     attr_reader :shared_data
 
     def initialize
       @steps = []
-      @pids = []
+      @ids = []
       @shared_data = {} # TODO: This needs to be thread safe
       observers << self
     end
 
     def run
       notify(self, :before_run)
-      if RUBY_PLATFORM == 'ruby'
-        @drb_server = DRb.start_service(nil, shared_data)
-      end
-      pids.clear
+      @drb_server = DRb.start_service(nil, shared_data) unless using_threads?
+      ids.clear
       prepare
 
       steps.each do |step|
-        if RUBY_PLATFORM == 'java'
-          pids << Thread.start do 
-            step.shared_data = shared_data
-            step.run
-          end
-        else
-          pids << fork do
-            DRb.start_service # the parent DRb thread dies across the fork
-            step.shared_data = DRbObject.new_with_uri(drb_server.uri)
-            step.run
-          end
-          step.close_descriptors
+        ids << in_parallel do
+          step.shared_data = step_shared_data
+          step.run
         end
+        step.close_descriptors unless using_threads?
       end
     ensure
-      if RUBY_PLATFORM == 'java'
-        pids.each { |t| t.join }
-      else
-        Process.waitall
-        drb_server.stop_service
-      end
-
+      cleanup
       notify(self, :after_run)
     end
 
@@ -59,6 +43,23 @@ module Rodimus
 
     private
 
+    def cleanup
+      if using_threads?
+        ids.each { |t| t.join }
+      else
+        Process.waitall
+        drb_server.stop_service
+      end
+    end
+    
+    def in_parallel 
+      if using_threads?
+        Thread.start { yield }
+      else
+        fork { yield }
+      end
+    end
+
     def prepare
       # [1, 2, 3, 4] => [1, 2], [2, 3], [3, 4]
       steps.inject do |first, second|
@@ -67,6 +68,19 @@ module Rodimus
         second.incoming = read
         second
       end
+    end
+
+    def step_shared_data
+      if using_threads?
+        shared_data
+      else
+        DRb.start_service # service dies across forked process
+        DRbObject.new_with_uri(drb_server.uri)
+      end
+    end
+
+    def using_threads?
+      Rodimus.configuration.use_threads
     end
   end
 
