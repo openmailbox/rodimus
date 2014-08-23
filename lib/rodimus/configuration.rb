@@ -8,7 +8,7 @@ module Rodimus
     def initialize
       @logger = Logger.new(STDOUT)
       @benchmarking = false
-      @use_threads = (RUBY_PLATFORM == 'java')
+      @use_threads = ['jruby', 'rbx'].include?(RUBY_ENGINE)
     end
   end
 

@@ -8,8 +8,6 @@ require 'rodimus/transformation'
 require 'rodimus/version'
 
 module Rodimus
-  $SAFE = 1 # Because we're using DRb
-
   class << self
     attr_accessor :configuration
   end
@@ -21,5 +19,9 @@ module Rodimus
 
   def self.logger
     configuration.logger
+  end
+
+  unless Rodimus.configuration.use_threads
+    $SAFE = 1 # Because we're using DRb
   end
 end
