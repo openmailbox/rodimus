@@ -12,3 +12,9 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+desc 'Run a simulation on a large data set'
+task :simulate, :rows do |t, args|
+  require 'rodimus/simulation'
+  rows = (args[:rows] || 50_000).to_i
+  Rodimus::Simulation.run(rows)
+end
