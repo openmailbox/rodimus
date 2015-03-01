@@ -1,6 +1,7 @@
 module Rodimus
 
   class BufferedStep < Step
+    # The maximum size of the buffer
     attr_accessor :buffer_size
     attr_reader   :buffer
 
@@ -23,8 +24,7 @@ module Rodimus
       end
     end
 
-    private
-
+    # Flush the contents of the buffer to the outgoing data stream
     def flush
       outgoing.puts(buffer.join("\n"))
       @buffer = []
