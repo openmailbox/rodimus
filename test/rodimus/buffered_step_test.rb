@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestBufferedStep < MiniTest::Unit::TestCase
+class TestBufferedStep < MiniTest::Test
   attr_reader :incoming, :outgoing, :step
 
   def setup

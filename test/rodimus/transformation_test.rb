@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Rodimus
 
-  class TestTransformation < MiniTest::Unit::TestCase
+  class TestTransformation < MiniTest::Test
     Rodimus.configure do |config|
       config.logger = Logger.new(nil)
     end

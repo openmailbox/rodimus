@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestObserving < MiniTest::Unit::TestCase
+class TestObserving < MiniTest::Test
   def setup
     @observer = Class.new do
       include Rodimus::Observing

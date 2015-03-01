@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestStep < MiniTest::Unit::TestCase
+class TestStep < MiniTest::Test
   def setup
     @test_string = "row 1\nrow 2"
     @incoming = StringIO.new(@test_string)

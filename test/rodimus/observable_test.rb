@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestObservable < MiniTest::Unit::TestCase
+class TestObservable < MiniTest::Test
   def setup
     @fake_observer = Class.new do
       attr_reader :subject, :event_type
