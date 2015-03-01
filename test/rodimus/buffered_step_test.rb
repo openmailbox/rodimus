@@ -1,28 +1,13 @@
-require 'minitest/autorun'
-require 'rodimus'
-
-class TestIO < IO # Because we can't read closed StringIOs
-  attr_reader :history
-
-  def initialize
-    @history = []
-  end
-
-  def close; nil; end
-
-  def puts(string)
-    history << string
-  end
-end
+require 'test_helper'
 
 class TestBufferedStep < MiniTest::Unit::TestCase
-  attr_reader :rows, :incoming, :outgoing, :step
+  attr_reader :incoming, :outgoing, :step
 
   def setup
-    @rows = "row 1\nrow 2\nrow 3"
+    rows      = "row 1\nrow 2\nrow 3"
     @incoming = StringIO.new(rows)
     @outgoing = TestIO.new
-    @step = Rodimus::BufferedStep.new
+    @step     = Rodimus::BufferedStep.new
     
     step.incoming = incoming
     step.outgoing = outgoing
@@ -38,8 +23,8 @@ class TestBufferedStep < MiniTest::Unit::TestCase
   end
 
   def test_flushing_rows
-    step.buffer_size     = 4
-    expected_write_count = 1
+    step.buffer_size     = 2
+    expected_write_count = 2
 
     step.run
 

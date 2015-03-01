@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'rodimus'
+require 'test_helper'
 
 module Rodimus
 

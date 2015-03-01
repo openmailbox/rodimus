@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'rodimus'
+require 'test_helper'
 
 class TestObserving < MiniTest::Unit::TestCase
   def setup
