@@ -4,6 +4,7 @@ require 'rodimus/observing'
 require 'rodimus/benchmark'
 require 'rodimus/runtime_logging'
 require 'rodimus/step'
+require 'rodimus/buffered_step'
 require 'rodimus/transformation'
 require 'rodimus/version'
 
