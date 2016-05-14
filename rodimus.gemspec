@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name                  = "rodimus"
   spec.version               = Rodimus::VERSION
   spec.authors               = ["Brandon Rice"]
-  spec.email                 = ["brice84@gmail.com"]
+  spec.email                 = ["brandon@blrice.net"]
   spec.summary               = "An ETL (Extract-Transform-Load) library that uses a forking process model for concurrency."
   spec.description           = "An ETL (Extract-Transform-Load) library that uses a forking process model for concurrency."
   spec.homepage              = "https://github.com/nevern02/rodimus"
@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.8"
-  spec.add_development_dependency "rake", "~> 10.4"
-  spec.add_development_dependency "faker", "~> 1.4"
-  spec.add_development_dependency "minitest", "~> 5.4"
+  spec.add_development_dependency "bundler",  "~> 1.12"
+  spec.add_development_dependency "rake",     "~> 11.1"
+  spec.add_development_dependency "faker",    "~> 1.6"
+  spec.add_development_dependency "minitest", "~> 5.8"
 end
